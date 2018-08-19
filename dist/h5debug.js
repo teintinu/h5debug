@@ -21,7 +21,7 @@ function enableDebug(name, opts) {
         if (!(opts && opts.disableHistory)) {
             history.push(args
                 .map(function (a) { return typeof a === "string" ? a : JSON.stringify(a); })
-                .join());
+                .join(""));
         }
         // tslint:disable-next-line:no-console
         if (!(opts && opts.disbleConsole))

@@ -32,7 +32,7 @@ export function enableDebug(
             history.push(
                 args
                     .map((a) => typeof a === "string" ? a : JSON.stringify(a))
-                    .join(),
+                    .join(""),
             );
         }
         // tslint:disable-next-line:no-console

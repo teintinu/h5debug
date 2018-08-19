@@ -10,11 +10,11 @@ describe("h5debug", () => {
         enableDebug("mytest", {
             disbleConsole: true,
             handler(...args: any[]) {
-                res.push(args.join());
+                res.push(args.join(""));
             },
         });
         h5debug.mytest("x", "y");
-        expect(res).toEqual(["x,y"]);
+        expect(res).toEqual(["xy"]);
         expect(res).toEqual(h5debug.mytest.history());
 
         disableDebug("mytest");
