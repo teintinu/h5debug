@@ -20,6 +20,7 @@ export function enableDebug(
     name: string,
     opts?: H5DebugOpts,
 ): void {
+    if (!name) throw new Error("Invalid name")
     const history: string[] = []
     const m = {
         history(): string[] {
