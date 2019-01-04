@@ -11,3 +11,4 @@ export declare function enableDebug(name: string, opts?: {
     handler?(...args: any[]): void | false;
 }): void;
 export declare function disableDebug(name: string): void;
+export declare function compareHistory(history: string[], expect: Array<string | RegExp>): string[] | "OK";
