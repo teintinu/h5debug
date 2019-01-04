@@ -64,16 +64,19 @@ function compareHistory(history, expect) {
     }
     return "OK";
     function match() {
-        var h = history[ih];
+        var h = history[ih].replace(/"/g, "\uFF02");
         var e = expect[ie];
         var sr = "";
         if (typeof e === "string") {
-            var r1 = h.indexOf(e) >= 0;
+            var r1 = h.indexOf(e.replace(/"/g, "\uFF02")) >= 0;
             if (r1)
                 sr = e;
         }
-        else if (e.test(h))
-            sr = e.toString();
+        else {
+            var nr = new RegExp(e.source.replace(/"/g, "\uFF02"), e.flags);
+            if (nr.test(h))
+                sr = e.toString();
+        }
         if (!sr) {
             matches.push("=>(SKIP) " + h);
             return false;

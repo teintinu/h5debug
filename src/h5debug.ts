@@ -75,13 +75,16 @@ export function compareHistory(history: string[], expect: Array<string | RegExp>
     }
     return "OK"
     function match() {
-        const h = history[ih]
+        const h = history[ih].replace(/"/g, "\uFF02")
         const e = expect[ie]
         let sr: string = ""
         if (typeof e === "string") {
-            const r1 = h.indexOf(e) >= 0
+            const r1 = h.indexOf(e.replace(/"/g, "\uFF02")) >= 0
             if (r1) sr = e
-        } else if (e.test(h)) sr = e.toString()
+        } else {
+            const nr = new RegExp(e.source.replace(/"/g, "\uFF02"), e.flags)
+            if (nr.test(h)) sr = e.toString()
+        }
         if (!sr) {
             matches.push("=>(SKIP) " + h)
             return false

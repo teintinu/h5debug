@@ -42,12 +42,15 @@ describe("h5debug", () => {
         h5debug.mytest("2")
         expect(compareHistory(h5debug.mytest.history(),
             ["1", "{\uFF02k\uFF02:\uFF02quote\uFF02\uFF02", "2"])).toEqual("OK")
+        expect(compareHistory(h5debug.mytest.history(),
+            ["1", "{\"k\":\"quote\"\"", "2"])).toEqual("OK")
+        expect(compareHistory(h5debug.mytest.history(),
+            ["1", /"k".*quote"/, "2"])).toEqual("OK")
 
         disableDebug("mytest")
         expect(typeof h5debug.mytest).toBe("undefined")
     })
     it("handler with history", () => {
-        expect(typeof h5debug.mytest).toBe("undefined")
         enableDebug("mytest", { disableConsole: true })
         expect(typeof h5debug.mytest).toBe("function")
 
@@ -69,7 +72,6 @@ describe("h5debug", () => {
 
     })
     it("handler disableHistory", () => {
-        expect(typeof h5debug.mytest).toBe("undefined")
 
         const res: string[] = []
         enableDebug("mytest", {
@@ -88,7 +90,6 @@ describe("h5debug", () => {
         disableDebug("mytest")
     })
     it("handler with false", () => {
-        expect(typeof h5debug.mytest).toBe("undefined")
 
         const res: string[] = []
         enableDebug("mytest", {
