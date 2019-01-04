@@ -3,8 +3,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 require("@hoda5/extensions");
 exports.h5debug = {};
 function enableDebug(name, opts) {
+    if (!name)
+        throw new Error("Invalid name");
     var history = [];
     var m = {
+        clearHistory: function () {
+            history = [];
+        },
         history: function () {
             return history;
         },
@@ -20,9 +25,11 @@ function enableDebug(name, opts) {
         }
         if (!(opts && opts.disableHistory)) {
             history.push(args.map(function (a) {
-                return typeof a === "string" ? a : JSON.stringify(a);
-            })
-                .join(""));
+                return typeof a === "string" ?
+                    a.replace(/"/g, "\uFF02")
+                    : JSON.stringify(a, function (k, v) { return typeof v === "string" ? v.replace(/"/g, "\uFF02") : v; })
+                        .replace(/"/g, "\uFF02");
+            }).join(""));
         }
         // tslint:disable-next-line:no-console
         if (!(opts && opts.disableConsole))
@@ -43,10 +50,17 @@ function compareHistory(history, expect) {
             ie++;
         ih++;
     }
-    if (ie < expect.length) {
-        return matches.concat(["not matches: ",
-            expect.slice(ie).map(function (e) { return e.toString(); }).join("|"),
-        ].join(""));
+    if (ie < expect.length || ih === 0) {
+        if (history.length === 0)
+            matches.push("=>NO HISTORY");
+        if (expect.length === 0)
+            matches.push("=>NO EXPECT");
+        else {
+            matches.push(["=>not matches: ",
+                expect.slice(ie).map(function (e) { return e.toString(); }).join("|"),
+            ].join(""));
+        }
+        return matches;
     }
     return "OK";
     function match() {

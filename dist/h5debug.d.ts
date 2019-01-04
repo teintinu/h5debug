@@ -1,5 +1,6 @@
 import "@hoda5/extensions";
 export declare type H5DebugHandler = ((...args: any[]) => void) & {
+    clearHistory(): any;
     history(): string[];
 };
 export declare const h5debug: {

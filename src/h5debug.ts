@@ -3,7 +3,8 @@ import "@hoda5/extensions"
 export type H5DebugHandler =
     ((...args: any[]) => void) &
     {
-        history(): string[];
+        clearHistory(),
+        history(): string[],
     }
 
 export const h5debug: {
@@ -21,8 +22,11 @@ export function enableDebug(
     opts?: H5DebugOpts,
 ): void {
     if (!name) throw new Error("Invalid name")
-    const history: string[] = []
+    let history: string[] = []
     const m = {
+        clearHistory() {
+            history = []
+        },
         history(): string[] {
             return history
         },
@@ -34,8 +38,12 @@ export function enableDebug(
         if (!(opts && opts.disableHistory)) {
             history.push(
                 args.map((a) =>
-                    typeof a === "string" ? a : JSON.stringify(a))
-                    .join(""),
+                    typeof a === "string" ?
+                        a.replace(/"/g, "\uFF02")
+                        : JSON.stringify(a,
+                            (k, v) => typeof v === "string" ? v.replace(/"/g, "\uFF02") : v)
+                            .replace(/"/g, "\uFF02"),
+                ).join(""),
             )
         }
         // tslint:disable-next-line:no-console
@@ -55,10 +63,15 @@ export function compareHistory(history: string[], expect: Array<string | RegExp>
         if (match()) ie++
         ih++
     }
-    if (ie < expect.length) {
-        return matches.concat(["not matches: ",
-            expect.slice(ie).map((e) => e.toString()).join("|"),
-        ].join(""))
+    if (ie < expect.length || ih === 0) {
+        if (history.length === 0) matches.push("=>NO HISTORY")
+        if (expect.length === 0) matches.push("=>NO EXPECT")
+        else {
+            matches.push(["=>not matches: ",
+                expect.slice(ie).map((e) => e.toString()).join("|"),
+            ].join(""))
+        }
+        return matches
     }
     return "OK"
     function match() {
