@@ -5,10 +5,11 @@ export declare type H5DebugHandler = ((...args: any[]) => void) & {
 export declare const h5debug: {
     [name: string]: H5DebugHandler;
 };
-export declare function enableDebug(name: string, opts?: {
-    disbleConsole?: boolean;
+export interface H5DebugOpts {
+    disableConsole?: boolean;
     disableHistory?: boolean;
     handler?(...args: any[]): void | false;
-}): void;
+}
+export declare function enableDebug(name: string, opts?: H5DebugOpts): void;
 export declare function disableDebug(name: string): void;
 export declare function compareHistory(history: string[], expect: Array<string | RegExp>): string[] | "OK";

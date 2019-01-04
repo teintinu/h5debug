@@ -1,6 +1,6 @@
 {
   "name": "@hoda5/h5debug",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "",
   "main": "dist/h5debug.js",
   "types": "dist/h5debug.d.ts",

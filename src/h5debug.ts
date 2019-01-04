@@ -10,13 +10,15 @@ export const h5debug: {
     [name: string]: H5DebugHandler;
 } = {}
 
+export interface H5DebugOpts {
+    disableConsole?: boolean,
+    disableHistory?: boolean,
+    handler?(...args: any[]): void | false,
+}
+
 export function enableDebug(
     name: string,
-    opts?: {
-        disbleConsole?: boolean,
-        disableHistory?: boolean,
-        handler?(...args: any[]): void | false;
-    },
+    opts?: H5DebugOpts,
 ): void {
     const history: string[] = []
     const m = {
@@ -36,7 +38,7 @@ export function enableDebug(
             )
         }
         // tslint:disable-next-line:no-console
-        if (!(opts && opts.disbleConsole)) console.log(...[name, ...args])
+        if (!(opts && opts.disableConsole)) console.log(...[name, ...args])
     })
 }
 

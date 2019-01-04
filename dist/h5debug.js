@@ -25,7 +25,7 @@ function enableDebug(name, opts) {
                 .join(""));
         }
         // tslint:disable-next-line:no-console
-        if (!(opts && opts.disbleConsole))
+        if (!(opts && opts.disableConsole))
             console.log.apply(console, [name].concat(args));
     });
 }
