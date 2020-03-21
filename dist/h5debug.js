@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
 require("@hoda5/extensions");
 exports.h5debug = {};
 function enableDebug(name, opts) {
@@ -14,7 +15,7 @@ function enableDebug(name, opts) {
             return history;
         },
     };
-    exports.h5debug[name] = m.mergeObjWith(function () {
+    exports.h5debug[name] = h5lib.mergeObjWith(m, function () {
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             args[_i] = arguments[_i];
@@ -33,7 +34,7 @@ function enableDebug(name, opts) {
         }
         // tslint:disable-next-line:no-console
         if (!(opts && opts.disableConsole))
-            console.log.apply(console, [name].concat(args));
+            console.log.apply(console, tslib_1.__spreadArrays([name], args));
     });
 }
 exports.enableDebug = enableDebug;

@@ -31,7 +31,7 @@ export function enableDebug(
             return history
         },
     }
-    h5debug[name] = m.mergeObjWith((...args: any[]) => {
+    h5debug[name] = h5lib.mergeObjWith(m, (...args: any[]) => {
         if (opts && opts.handler) {
             if (opts.handler(...args) === false) return
         }

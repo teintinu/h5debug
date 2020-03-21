@@ -8,6 +8,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "noEmitHelpers": true,
+    "importHelpers": true,
     "target": "es5",
     "jsx": "react",
     "lib": [
